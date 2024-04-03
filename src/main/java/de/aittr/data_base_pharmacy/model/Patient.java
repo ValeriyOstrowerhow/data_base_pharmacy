@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
+import java.math.BigDecimal;
+
 @Entity
 @Setter
 @Getter
@@ -23,6 +25,6 @@ public class Patient {
     private String lastName;
     @NaturalId(mutable = true)
     private String email;
-    private String discount;
+    private BigDecimal discount;
 
 }
