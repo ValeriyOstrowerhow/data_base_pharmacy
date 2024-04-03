@@ -14,27 +14,58 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PatientController {
     private final IPatientService patientService;
+
     @GetMapping
-   public ResponseEntity<List<Patient>> getPatients(){
-       return new ResponseEntity<>(patientService.getPatients(), HttpStatus.FOUND);
-   }
-   @PostMapping
-   public Patient addPatient(@RequestBody Patient patient){
-        return patientService.addPatient(patient);
+    public ResponseEntity<List<Patient>> getPatients() {
+        return new ResponseEntity<>(patientService.getPatients(), HttpStatus.OK);
+    }
 
-   }
-   @PutMapping("/update/{id}")
-   public Patient updatePatient(@RequestBody Patient patient, @PathVariable Long id){
-        return patientService.updatePatient(patient, id);
+    @PostMapping
+    public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
+        try {
+            Patient newPatient =
+                    patientService.addPatient(patient);
+            return new ResponseEntity<>
+                    (newPatient, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("We encountered an issue while registering the patient. Please try again:"
+                    + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-   }
-   @DeleteMapping("/delete/{id}")
-   public void deleteStudent(@PathVariable Long id){
-        patientService.deletePatient(id);
-   }
-   @GetMapping("/patient{id}")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updatePatient(@RequestBody Patient patient, @PathVariable Long id) {
+        try {
+            Patient updatePatient = patientService.updatePatient(patient, id);
 
-   public Patient getPatientById(@PathVariable Long id){
-        return patientService.getPatientById(id);
-   }
+            return new ResponseEntity<>(updatePatient, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Updating the patient's information failed. Please check the details and try again : "
+                    + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deletePatient(@PathVariable Long id) {
+        try {
+            patientService.deletePatient(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("There was a problem removing the patient. Please verify the ID and try again: "
+                    + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/patient{id}")
+
+    public ResponseEntity<?>
+    getPatientById(@PathVariable Long id) {
+        try {
+            Patient patient = patientService.getPatientById(id);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("We couldn't find a patient with the provided ID. Please try a different ID:"
+                    + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
