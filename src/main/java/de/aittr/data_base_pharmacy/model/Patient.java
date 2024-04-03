@@ -1,18 +1,19 @@
 package de.aittr.data_base_pharmacy.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
-
 import java.math.BigDecimal;
 
+
+
+
+
 @Entity
+@Table(name = "patients")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -26,5 +27,4 @@ public class Patient {
     @NaturalId(mutable = true)
     private String email;
     private BigDecimal discount;
-
 }

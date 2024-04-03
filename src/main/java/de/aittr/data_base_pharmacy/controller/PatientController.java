@@ -8,19 +8,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping(value = "/patients")
 @RequiredArgsConstructor
 public class PatientController {
     private final IPatientService patientService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Patient>> getPatients() {
         return new ResponseEntity<>(patientService.getPatients(), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
         try {
             Patient newPatient =
@@ -56,7 +56,7 @@ public class PatientController {
         }
     }
 
-    @GetMapping("/patient{id}")
+    @GetMapping("/patient/{id}")
 
     public ResponseEntity<?>
     getPatientById(@PathVariable Long id) {
