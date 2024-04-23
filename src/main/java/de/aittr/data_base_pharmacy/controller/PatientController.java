@@ -2,25 +2,25 @@ package de.aittr.data_base_pharmacy.controller;
 
 import de.aittr.data_base_pharmacy.model.Patient;
 import de.aittr.data_base_pharmacy.service.IPatientService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping(value = "/patients")
 @RequiredArgsConstructor
 public class PatientController {
     private final IPatientService patientService;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<Patient>> getPatients() {
         return new ResponseEntity<>(patientService.getPatients(), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
         try {
             Patient newPatient =
@@ -33,7 +33,7 @@ public class PatientController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updatePatient(@RequestBody Patient patient, @PathVariable Long id) {
         try {
             Patient updatePatient = patientService.updatePatient(patient, id);
@@ -45,7 +45,7 @@ public class PatientController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePatient(@PathVariable Long id) {
         try {
             patientService.deletePatient(id);
@@ -56,7 +56,7 @@ public class PatientController {
         }
     }
 
-    @GetMapping("/patient/{id}")
+    @GetMapping("/{id}")
 
     public ResponseEntity<?>
     getPatientById(@PathVariable Long id) {
@@ -69,3 +69,4 @@ public class PatientController {
         }
     }
 }
+
